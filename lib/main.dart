@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'MAHTAB Picking Module'),
+      home: const MyHomePage(title: 'A1 Picking Module'),
     );
   }
 }
