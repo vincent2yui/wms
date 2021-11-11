@@ -12,59 +12,151 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'A1 Picking Module'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-
-        title: Text(widget.title),
+        title: const Text('A1'),
       ),
       body: Center(
-
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: ElevatedButton(
+                child: const Text(
+                  'RECEIVING',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20),
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.assignment_ind),
+                              title: const Text('Picking Module'),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            const TextField(),
+                            ListTile(
+                              leading: const Icon(Icons.photo),
+                              title: const Text('Photo'),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.music_note),
+                              title: const Text('Music'),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.videocam),
+                              title: const Text('Video'),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'PUT AWAY',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'PICKING',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'LOADING',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'REPLENISHMENT',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 280,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'CYCLE COUNT',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20),
+                ),
+              ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
