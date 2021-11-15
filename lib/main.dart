@@ -28,136 +28,86 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('A1'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: ElevatedButton(
-                child: const Text(
-                  'RECEIVING',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              leading: const Icon(Icons.assignment_ind),
-                              title: const Text('Picking Module'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            const TextField(),
-                            ListTile(
-                              leading: const Icon(Icons.photo),
-                              title: const Text('Photo'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.music_note),
-                              title: const Text('Music'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: const Icon(Icons.videocam),
-                              title: const Text('Video'),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                },
-              ),
-            ),
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'PUT AWAY',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'PICKING',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'LOADING',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'REPLENISHMENT',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 280,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text(
-                  'CYCLE COUNT',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20),
-                ),
-              ),
-            ),
-          ],
+      body: GridView(
+        padding: const EdgeInsets.all(18),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          mainAxisExtent: 118,
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        children: const [
+          ActivityCard(
+            activityName: "Receiving",
+            activityNameLogo: "receiving1.png",
+            isActive: true,
+          ),
+          ActivityCard(
+            activityName: "Put Away",
+            activityNameLogo: "put_away1.png",
+            isActive: false,
+          ),
+          ActivityCard(
+            activityName: "Picking",
+            activityNameLogo: "picking1.png",
+            isActive: false,
+          ),
+          ActivityCard(
+            activityName: "Loading",
+            activityNameLogo: "loading1.png",
+            isActive: true,
+          ),
+          ActivityCard(
+            activityName: "Replenishment",
+            activityNameLogo: "replenishment1.png",
+            isActive: true,
+          ),
+          ActivityCard(
+            activityName: "Cycle Count",
+            activityNameLogo: "cycle_count1.png",
+            isActive: true,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ActivityCard extends StatelessWidget {
+  const ActivityCard({
+    Key? key,
+    required this.activityName,
+    required this.activityNameLogo,
+    this.isActive = false,
+  }) : super(key: key);
+
+  final String activityName;
+  final String activityNameLogo;
+  final bool isActive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: isActive ? Theme.of(context).primaryColor : Colors.white70,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/activity_logo/$activityNameLogo',
+            color: isActive ? Colors.white : Colors.black38,
+            scale: 3.5,
+          ),
+          const SizedBox(height: 5),
+          Text(
+            activityName,
+            style: TextStyle(
+              color: isActive ? Colors.white : Colors.black38,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
