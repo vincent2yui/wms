@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:wms/core/color_style.dart';
 
@@ -23,41 +24,92 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  late Future<List<User>> futureUsers;
-
-  @override
-  void initState() {
-    super.initState();
-    futureUsers = fetchUsers();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Fetch Data Example'),
       ),
-      body: Center(
-        child: FutureBuilder<List<User>>(
-          future: futureUsers,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data!.length.toString());
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
+              ],
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: ColorStyle.disableMainColor,
+                      width: 0.0,
+                    ),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  filled: false,
+                  fillColor: Colors.white70,
+                  hintStyle:
+                      const TextStyle(color: ColorStyle.disableMainColor),
+                  hintText: "Username"),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
+            child: TextField(
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
+              ],
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: ColorStyle.disableMainColor,
+                      width: 0.0,
+                    ),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  filled: false,
+                  fillColor: Colors.white70,
+                  hintStyle:
+                      const TextStyle(color: ColorStyle.disableMainColor),
+                  hintText: "Password"),
+            ),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            child: const Text('Login'),
+            onPressed: () {},
+          ),
+          Center(
+            child: FutureBuilder<List<User>>(
+              future: fetchUsers(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(snapshot.data!.length.toString());
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
 
-            return const CircularProgressIndicator();
-          },
-        ),
+                return const CircularProgressIndicator();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
