@@ -28,6 +28,7 @@ flutter:
   assets:
     - assets/activity_logo/
     - assets/fonts/
+    - assets/
 
   fonts:
     - family: Roboto

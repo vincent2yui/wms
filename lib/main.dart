@@ -30,86 +30,109 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Fetch Data Example'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-            child: TextField(
-              keyboardType: TextInputType.text,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
-              ],
-              decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: ColorStyle.disableMainColor,
-                      width: 0.0,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+              child: TextField(
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
+                ],
+                decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white12,
+                        width: 0.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  filled: false,
-                  fillColor: Colors.white70,
-                  hintStyle:
-                      const TextStyle(color: ColorStyle.disableMainColor),
-                  hintText: "Username"),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0),
-            child: TextField(
-              keyboardType: TextInputType.visiblePassword,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
-              ],
-              decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: ColorStyle.disableMainColor,
-                      width: 0.0,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  filled: false,
-                  fillColor: Colors.white70,
-                  hintStyle:
-                      const TextStyle(color: ColorStyle.disableMainColor),
-                  hintText: "Password"),
+                    filled: true,
+                    fillColor: ColorStyle.defaultScaffoldColor,
+                    hintStyle: const TextStyle(
+                      color: ColorStyle.disableMainColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    hintText: "Username"),
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            child: const Text('Login'),
-            onPressed: () {},
-          ),
-          Center(
-            child: FutureBuilder<List<User>>(
-              future: fetchUsers(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(snapshot.data!.length.toString());
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-
-                return const CircularProgressIndicator();
-              },
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+              child: TextField(
+                keyboardType: TextInputType.visiblePassword,
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
+                ],
+                decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.white12,
+                        width: 0.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    filled: true,
+                    fillColor: ColorStyle.defaultScaffoldColor,
+                    hintStyle: const TextStyle(
+                      color: ColorStyle.disableMainColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    hintText: "Password"),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(280, 60),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+              child: const Text(
+                'LOGIN',
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {},
+            ),
+            Center(
+              child: FutureBuilder<List<User>>(
+                future: fetchUsers(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(snapshot.data!.length.toString());
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 25.0),
+              child: Image.asset(
+                'assets/company_logo.png',
+                scale: 2.5,
+              ),
+            ),
+            const Text(
+              'Warehouse Management System 1.0.0',
+              style: TextStyle(color: Colors.black38),
+            ),
+          ],
+        ),
       ),
     );
   }

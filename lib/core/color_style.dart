@@ -9,4 +9,5 @@ class ColorStyle {
 
   static const disableMainColor = Colors.black38;
   static const disableSecondaryColor = Colors.white70;
+  static const defaultScaffoldColor = Color(0xFFF1F2F3);
 }
