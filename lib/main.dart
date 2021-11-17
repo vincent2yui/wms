@@ -9,6 +9,29 @@ import 'user_auth/user_auth_login_page.dart';
 final Injected<Configuration> config =
     RM.inject(() => Configuration.production);
 
+final username = RM.inject<Username>(
+  () => Username(''),
+  stateInterceptor: (currentSnap, nextSnap) {
+    if (nextSnap.data!.username.isEmpty) {
+      return nextSnap.copyToHasError(
+        Exception('Enter a valid username'),
+        stackTrace: StackTrace.current,
+      );
+    }
+  },
+);
+final password = RM.inject<Password>(
+  () => Password(''),
+  stateInterceptor: (currentSnap, nextSnap) {
+    if (nextSnap.data!.password.isEmpty) {
+      return nextSnap.copyToHasError(
+        Exception('Enter a valid password'),
+        stackTrace: StackTrace.current,
+      );
+    }
+  },
+);
+
 void main() {
   runApp(const MainApp());
 }
@@ -46,4 +69,16 @@ class MainApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class Username {
+  final String username;
+
+  Username(this.username);
+}
+
+class Password {
+  final String password;
+
+  Password(this.password);
 }
