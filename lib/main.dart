@@ -1,9 +1,13 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
+
+import 'core/entity/configuration.dart';
+import 'user_auth/user_auth_login_page.dart';
+
+final Injected<Configuration> config =
+    RM.inject(() => Configuration.production);
 
 void main() {
   runApp(const MainApp());
@@ -16,199 +20,30 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      // debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: ColorStyle.primaryColor,
       ),
-      home: const LoginPage(),
-    );
-  }
-}
+      home: OnReactive(
+        () {
+          if (config.state == Configuration.production) {
+            return const LoginPage();
+          }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-              child: TextField(
-                keyboardType: TextInputType.text,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
-                ],
-                decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white12,
-                        width: 0.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    filled: true,
-                    fillColor: ColorStyle.defaultScaffoldColor,
-                    hintStyle: const TextStyle(
-                      color: ColorStyle.disableMainColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintText: "Username"),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              child: TextField(
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
-                ],
-                decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white12,
-                        width: 0.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    filled: true,
-                    fillColor: ColorStyle.defaultScaffoldColor,
-                    hintStyle: const TextStyle(
-                      color: ColorStyle.disableMainColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintText: "Password"),
-              ),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: const Size(280, 60),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              child: const Text(
-                'LOGIN',
-                style: TextStyle(fontSize: 18),
-              ),
-              onPressed: () {},
-            ),
-            Center(
-              child: FutureBuilder<List<User>>(
-                future: fetchUsers(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(snapshot.data!.length.toString());
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  return const CircularProgressIndicator();
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 25.0),
-              child: Image.asset(
-                'assets/company_logo.png',
-                scale: 2.5,
-              ),
-            ),
-            const Text(
-              'Warehouse Management System 1.0.0',
-              style: TextStyle(color: Colors.black38),
-            ),
-          ],
-        ),
+          return Banner(
+            location: BannerLocation.topStart,
+            message: config.state.displayBannerName,
+            color: config.state.bannerColor,
+            // color: Colors.green.withOpacity(0.6), // Green Demo
+            textStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 12.0,
+                letterSpacing: 1.0),
+            textDirection: TextDirection.ltr,
+            child: const LoginPage(),
+          );
+        },
       ),
-    );
-  }
-}
-
-Future<List<User>> fetchUsers() async {
-  Map<String, String> requestHeaders = {
-    'Authorization': 'Basic Vm9jb2xsZWN0OkFiY2RAMTIzNDU=',
-    'Cookie': 'sap-usercontext=sap-client=200',
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-    'X-Requested-With': 'X'
-  };
-
-  final response = await http.get(
-      Uri.parse(
-          'http://s4prdapp01.ffpgroup.net:8000/sap/opu/odata/sap/ZEWM_USERS_SRV/usersrecordSet'),
-      headers: requestHeaders);
-
-  if (response.statusCode == 200) {
-    List<User> userList = [];
-
-    for (var user in json.decode(response.body).values.first.values.first) {
-      userList.add(
-        User(
-            warehouseName: user['Lgnum'],
-            username: user['Uname'],
-            password: user['Password'],
-            isReceivingActive: user['InbAct'],
-            isPutAwayActive: user['PtaAct'],
-            isPickingActive: user['OutAct'],
-            isLoadingActive: user['LdgAct'],
-            isReplenishmentActive: user['PrmAct'],
-            isCycleCountActive: user['CycAct']),
-      );
-    }
-    return userList;
-  } else {
-    throw Exception('Failed to load users');
-  }
-}
-
-class User {
-  final String warehouseName;
-  final String username;
-  final String password;
-  final String isReceivingActive;
-  final String isPutAwayActive;
-  final String isPickingActive;
-  final String isLoadingActive;
-  final String isReplenishmentActive;
-  final String isCycleCountActive;
-
-  User({
-    required this.warehouseName,
-    required this.username,
-    required this.password,
-    required this.isReceivingActive,
-    required this.isPutAwayActive,
-    required this.isPickingActive,
-    required this.isLoadingActive,
-    required this.isReplenishmentActive,
-    required this.isCycleCountActive,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      warehouseName: json['Lgnum'],
-      username: json['Uname'],
-      password: json['Password'],
-      isReceivingActive: json['InbAct'],
-      isPutAwayActive: json['PtaAct'],
-      isPickingActive: json['OutAct'],
-      isLoadingActive: json['LdgAct'],
-      isReplenishmentActive: json['PrmAct'],
-      isCycleCountActive: json['CycAct'],
     );
   }
 }

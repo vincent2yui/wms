@@ -10,4 +10,8 @@ class ColorStyle {
   static const disableMainColor = Colors.black38;
   static const disableSecondaryColor = Colors.white70;
   static const defaultScaffoldColor = Color(0xFFF1F2F3);
+
+  static final bannerDemoColor = Colors.green.withOpacity(0.6);
+  static final bannerDevColor = Colors.orange.withOpacity(0.6);
+  static final bannerPrdColor = Colors.blue.withOpacity(0.6);
 }
