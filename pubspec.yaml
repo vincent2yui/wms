@@ -15,12 +15,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   states_rebuilder: ^5.0.0
+  mockito: ^5.0.16
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+  test: ^1.17.10
 
 flutter:
 

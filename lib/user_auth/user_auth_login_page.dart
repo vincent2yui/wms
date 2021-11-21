@@ -7,8 +7,6 @@ import 'package:wms/core/entity/configuration.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
 
-import 'repository/user_repository.dart';
-
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -104,6 +102,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     onPressed: isValid
                         ? () {
+                            FocusScope.of(context).unfocus();
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
@@ -113,13 +112,15 @@ class LoginPage extends StatelessWidget {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     FutureBuilder<List<User>>(
-                                      future: fetchUsers(),
+                                      future:
+                                          authService.state.fetchValidUsers(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           debugPrint(
                                               snapshot.data!.length.toString());
                                           Navigator.of(context).pop();
-                                          if (snapshot.data!.contains(User(
+                                          if (authService.state
+                                              .isUserValid(User(
                                             username: username.state.username
                                                 .toUpperCase(),
                                             password: password.state.password,

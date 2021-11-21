@@ -2,12 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
+import 'package:wms/user_auth/repository/production_user_repository.dart';
 
 import 'core/entity/configuration.dart';
+import 'user_auth/services/authentication_service.dart';
 import 'user_auth/user_auth_login_page.dart';
 
 final Injected<Configuration> config =
     RM.inject(() => Configuration.production);
+
+final Injected<AuthenticationService> authService = RM.inject(
+    () => AuthenticationService(userRepository: ProductionUserRepository()));
 
 final username = RM.inject<Username>(
   () => Username(''),
@@ -72,9 +77,11 @@ class MainApp extends StatelessWidget {
 }
 
 class Username {
-  final String username;
+  final String _username;
 
-  Username(this.username);
+  Username(this._username);
+
+  String get username => _username.toUpperCase();
 }
 
 class Password {
