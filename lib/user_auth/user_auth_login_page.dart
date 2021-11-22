@@ -17,6 +17,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -25,6 +28,7 @@ class LoginPage extends StatelessWidget {
           () => Column(
             children: [
               LoginTextField(
+                controller: usernameController,
                 padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
                 isObscureText: false,
                 hintText: "Username",
@@ -33,6 +37,7 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               LoginTextField(
+                controller: passwordController,
                 padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10),
                 isObscureText: true,
                 hintText: "Password",
