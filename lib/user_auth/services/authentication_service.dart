@@ -8,26 +8,21 @@ class AuthenticationService {
   AuthenticationService({required userRepository})
       : _userRepository = userRepository;
 
-  Future<void> fetchValidUsers() async {
-    _validUsers = await _userRepository.fetchValidUsers();
-    return;
-  }
-
   Future<bool> isUserValid(User loginUser) async {
-    await checkUserListEmpty();
+    await fetchValidUsers();
 
     return _validUsers.contains(loginUser);
   }
 
   Future<User> loginUser(User loginUser) async {
-    await checkUserListEmpty();
+    await fetchValidUsers();
 
     return _validUsers.firstWhere((element) => element == loginUser);
   }
 
-  Future<void> checkUserListEmpty() async {
+  Future<void> fetchValidUsers() async {
     if (_validUsers.isEmpty) {
-      await fetchValidUsers();
+      _validUsers = await _userRepository.fetchValidUsers();
     }
   }
 }

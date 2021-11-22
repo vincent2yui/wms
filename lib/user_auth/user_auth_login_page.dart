@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
 import 'package:wms/core/entity/configuration.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
+import 'package:wms/user_auth/widgets/login_textfield.dart';
 
 import 'user_auth_main_menu.dart';
 
@@ -24,83 +24,25 @@ class LoginPage extends StatelessWidget {
         child: OnReactive(
           () => Column(
             children: [
-              Padding(
+              LoginTextField(
                 padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
-                child: TextField(
-                  keyboardType: TextInputType.text,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
-                  ],
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white12,
-                        width: 0.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: ColorStyle.primaryColor,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    filled: true,
-                    fillColor: ColorStyle.defaultScaffoldColor,
-                    hintStyle: const TextStyle(
-                      color: ColorStyle.disableMainColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintText: "Username",
-                    errorText: username.error?.message,
-                  ),
-                  onChanged: (String value) => username.state = Username(value),
-                ),
+                isObscureText: false,
+                hintText: "Username",
+                errorText: username.error?.message,
+                onChanged: (String value) => username.state = Username(value),
               ),
               const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                child: TextField(
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))
-                  ],
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white12,
-                        width: 0.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: ColorStyle.primaryColor,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    filled: true,
-                    fillColor: ColorStyle.defaultScaffoldColor,
-                    hintStyle: const TextStyle(
-                      color: ColorStyle.disableMainColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintText: "Password",
-                    errorText: password.error?.message,
-                  ),
-                  onChanged: (String value) => password.state = Password(value),
-                ),
+              LoginTextField(
+                padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10),
+                isObscureText: true,
+                hintText: "Password",
+                errorText: password.error?.message,
+                onChanged: (String value) => password.state = Password(value),
+                onSubmitted: isValid
+                    ? (String value) async {
+                        await processLogin(context);
+                      }
+                    : (String value) {}, // Disable Login Process,
               ),
               const SizedBox(height: 10),
               OnBuilder.data(
@@ -122,7 +64,7 @@ class LoginPage extends StatelessWidget {
                         ? () async {
                             await processLogin(context);
                           }
-                        : () {}, // Disable button
+                        : () {}, // Disable Login Process
                   );
                 },
               ),
@@ -165,10 +107,8 @@ class LoginPage extends StatelessWidget {
               )),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  // Navigator.of(context).pop();
                   if (snapshot.data!) {
                     debugPrint('User Authenticated');
-                    //RM.navigate.to(const MainMenu());
                   } else {
                     debugPrint('Invalid User Details');
                     return Row(
