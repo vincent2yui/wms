@@ -5,6 +5,7 @@ import 'package:wms/core/color_style.dart';
 import 'package:wms/user_auth/repository/production_user_repository.dart';
 
 import 'core/entity/configuration.dart';
+import 'core/entity/user.dart';
 import 'user_auth/services/authentication_service.dart';
 import 'user_auth/user_auth_login_page.dart';
 
@@ -47,7 +48,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      navigatorKey: RM.navigate.navigatorKey,
+      title: 'Warehouse Management System',
       // debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: ColorStyle.primaryColor,
@@ -62,7 +64,6 @@ class MainApp extends StatelessWidget {
             location: BannerLocation.topStart,
             message: config.state.displayBannerName,
             color: config.state.bannerColor,
-            // color: Colors.green.withOpacity(0.6), // Green Demo
             textStyle: const TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 12.0,
@@ -74,18 +75,4 @@ class MainApp extends StatelessWidget {
       ),
     );
   }
-}
-
-class Username {
-  final String _username;
-
-  Username(this._username);
-
-  String get username => _username.toUpperCase();
-}
-
-class Password {
-  final String password;
-
-  Password(this.password);
 }

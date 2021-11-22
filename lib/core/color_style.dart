@@ -6,6 +6,7 @@ class ColorStyle {
   static const primaryColor = Color(0xFF05389A);
   static const secondaryColor = Color(0xFF95D6FE);
   static const tertiaryColor = Color(0xFF3E83D5);
+  static const errorColor = Colors.red;
 
   static const disableMainColor = Colors.black38;
   static const disableSecondaryColor = Colors.white70;

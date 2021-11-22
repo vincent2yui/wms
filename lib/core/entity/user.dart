@@ -26,3 +26,17 @@ class User extends Equatable {
   @override
   List<Object> get props => [username, password];
 }
+
+class Username {
+  final String _username;
+
+  Username(this._username);
+
+  String get username => _username.toUpperCase();
+}
+
+class Password {
+  final String password;
+
+  Password(this.password);
+}

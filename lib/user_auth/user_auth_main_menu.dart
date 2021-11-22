@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
+import 'package:wms/main.dart';
 
 import 'widgets/user_auth_activity_card.dart';
 
@@ -11,7 +13,8 @@ class MainMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorStyle.primaryColor,
-        title: const Text('MAHTAB'),
+        automaticallyImplyLeading: false,
+        title: OnReactive(() => Text(username.state.username)),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout_rounded),

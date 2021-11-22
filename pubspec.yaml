@@ -17,6 +17,7 @@ dependencies:
   states_rebuilder: ^5.0.0
   mockito: ^5.0.16
   equatable: ^2.0.3
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:

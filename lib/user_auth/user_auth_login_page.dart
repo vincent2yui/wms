@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
 import 'package:wms/core/entity/configuration.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
+
+import 'user_auth_main_menu.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,6 +36,13 @@ class LoginPage extends StatelessWidget {
                       borderSide: const BorderSide(
                         color: Colors.white12,
                         width: 0.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: ColorStyle.primaryColor,
+                        width: 2.0,
                       ),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -70,6 +80,13 @@ class LoginPage extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: ColorStyle.primaryColor,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
@@ -92,6 +109,7 @@ class LoginPage extends StatelessWidget {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: const Size(280, 60),
+                      primary: ColorStyle.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -101,44 +119,10 @@ class LoginPage extends StatelessWidget {
                       style: TextStyle(fontSize: 18),
                     ),
                     onPressed: isValid
-                        ? () {
-                            FocusScope.of(context).unfocus();
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                content: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    FutureBuilder<bool>(
-                                      future:
-                                          authService.state.isUserValid(User(
-                                        username: username.state.username
-                                            .toUpperCase(),
-                                        password: password.state.password,
-                                      )),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          Navigator.of(context).pop();
-                                          if (snapshot.data!) {
-                                            debugPrint('User Authenticated');
-                                          } else {
-                                            debugPrint('Invalid User Details');
-                                          }
-                                        } else if (snapshot.hasError) {
-                                          return Text('${snapshot.error}');
-                                        }
-                                        return const CircularProgressIndicator();
-                                      },
-                                    ),
-                                    const Text('Checking Details...'),
-                                  ],
-                                ),
-                              ),
-                            );
+                        ? () async {
+                            await processLogin(context);
                           }
-                        : () {},
+                        : () {}, // Disable button
                   );
                 },
               ),
@@ -163,6 +147,83 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> processLogin(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            FutureBuilder<bool>(
+              future: authService.state.isUserValid(User(
+                username: username.state.username.toUpperCase(),
+                password: password.state.password,
+              )),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  // Navigator.of(context).pop();
+                  if (snapshot.data!) {
+                    debugPrint('User Authenticated');
+                    //RM.navigate.to(const MainMenu());
+                  } else {
+                    debugPrint('Invalid User Details');
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: const [
+                        FaIcon(
+                          FontAwesomeIcons.timesCircle,
+                          size: 30,
+                          color: ColorStyle.errorColor,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Invalid User Details'),
+                      ],
+                    );
+                  }
+                } else if (snapshot.hasError) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const FaIcon(
+                        FontAwesomeIcons.timesCircle,
+                        size: 30,
+                        color: ColorStyle.errorColor,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        '${snapshot.error}',
+                        softWrap: true,
+                      ),
+                    ],
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    CircularProgressIndicator(
+                      color: ColorStyle.primaryColor,
+                    ),
+                    SizedBox(width: 20),
+                    Text('Checking Details...'),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+    var result = await authService.state.isUserValid(User(
+      username: username.state.username.toUpperCase(),
+      password: password.state.password,
+    ));
+    if (result) {
+      RM.navigate.toReplacement(const MainMenu());
+    }
   }
 
   Future<dynamic> buildShowModalBottomSheet(BuildContext context) {

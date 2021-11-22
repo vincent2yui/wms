@@ -24,7 +24,25 @@ void main() {
       setUp(() {
         authenticationService =
             AuthenticationService(userRepository: demoUserRepository);
+        authenticationService.fetchValidUsers();
       });
+
+      test('Should return valid user When user is A1', () async {
+        const validUser = User(username: 'A1', password: '1');
+
+        var result = await authenticationService.loginUser(validUser);
+
+        expect(result, validUser);
+      });
+
+      test('Should return valid user When user is A1', () async {
+        const validUser = User(username: 'A2', password: '2');
+
+        var result = await authenticationService.loginUser(validUser);
+
+        expect(result, validUser);
+      });
+
       test('Should throw exception When the service is not available', () {
         authenticationService =
             AuthenticationService(userRepository: fakeUserRepository);
@@ -64,9 +82,9 @@ void main() {
       });
 
       test('Should return true When login user A1 is authenticated', () async {
-        const invalidUser = User(username: 'A1', password: '1');
+        const validUser = User(username: 'A1', password: '1');
 
-        var result = await authenticationService.isUserValid(invalidUser);
+        var result = await authenticationService.isUserValid(validUser);
 
         expect(result, true);
       });
