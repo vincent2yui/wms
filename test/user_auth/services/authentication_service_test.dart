@@ -18,50 +18,57 @@ void main() {
     FakeUserRepository fakeUserRepository = FakeUserRepository();
     DemoUserRepository demoUserRepository = DemoUserRepository();
 
-    AuthenticationService authenticationService;
+    late AuthenticationService authenticationService;
 
     group('Check if user is not valid - ', () {
+      setUp(() {
+        authenticationService =
+            AuthenticationService(userRepository: demoUserRepository);
+      });
       test('Should throw exception When the service is not available', () {
         authenticationService =
             AuthenticationService(userRepository: fakeUserRepository);
 
         expect(
-          () async => await authenticationService.fetchValidUsers(),
+          () async => await authenticationService
+              .isUserValid(const User(username: '', password: '')),
           throwsA(isA<ServerException>()),
         );
       });
 
-      test('Should return false When login user A4 is not authenticated', () {
-        authenticationService =
-            AuthenticationService(userRepository: demoUserRepository);
+      test('Should return false When login user A4 is not authenticated',
+          () async {
         const invalidUser = User(username: 'A4', password: '4');
 
-        expect(authenticationService.isUserValid(invalidUser), false);
+        var result = await authenticationService.isUserValid(invalidUser);
+
+        expect(result, false);
       });
 
-      test('Should return false When login user A4 is not authenticated', () {
-        authenticationService =
-            AuthenticationService(userRepository: demoUserRepository);
+      test('Should return false When login user A4 is not authenticated',
+          () async {
         const invalidUser = User(username: 'A5', password: '5');
 
-        expect(authenticationService.isUserValid(invalidUser), false);
+        var result = await authenticationService.isUserValid(invalidUser);
+
+        expect(result, false);
       });
 
-      test('Should return false When login user a1 is not authenticated', () {
-        authenticationService =
-            AuthenticationService(userRepository: demoUserRepository);
+      test('Should return false When login user a1 is not authenticated',
+          () async {
         const invalidUser = User(username: 'a1', password: '1');
 
-        expect(authenticationService.isUserValid(invalidUser), false);
+        var result = await authenticationService.isUserValid(invalidUser);
+
+        expect(result, false);
       });
 
-      test('Should return true When login user A1 is authenticated', () {
-        authenticationService =
-            AuthenticationService(userRepository: demoUserRepository);
+      test('Should return true When login user A1 is authenticated', () async {
         const invalidUser = User(username: 'A1', password: '1');
-        final result = authenticationService.isUserValid(invalidUser);
 
-        expect(authenticationService.isUserValid(invalidUser), true);
+        var result = await authenticationService.isUserValid(invalidUser);
+
+        expect(result, true);
       });
     });
   });

@@ -111,20 +111,17 @@ class LoginPage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    FutureBuilder<List<User>>(
+                                    FutureBuilder<bool>(
                                       future:
-                                          authService.state.fetchValidUsers(),
+                                          authService.state.isUserValid(User(
+                                        username: username.state.username
+                                            .toUpperCase(),
+                                        password: password.state.password,
+                                      )),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          debugPrint(
-                                              snapshot.data!.length.toString());
                                           Navigator.of(context).pop();
-                                          if (authService.state
-                                              .isUserValid(User(
-                                            username: username.state.username
-                                                .toUpperCase(),
-                                            password: password.state.password,
-                                          ))) {
+                                          if (snapshot.data!) {
                                             debugPrint('User Authenticated');
                                           } else {
                                             debugPrint('Invalid User Details');

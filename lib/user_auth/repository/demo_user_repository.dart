@@ -9,5 +9,8 @@ class DemoUserRepository implements IUserRepository {
   ];
 
   @override
-  Future<List<User>> fetchValidUsers() => Future.value(_demoUsers);
+  Future<List<User>> fetchValidUsers() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return _demoUsers;
+  }
 }
