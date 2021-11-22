@@ -3,7 +3,7 @@ import 'package:wms/user_auth/interfaces/i_user_repository.dart';
 
 class AuthenticationService {
   final IUserRepository _userRepository;
-  late List<User> _validUsers;
+  List<User> _validUsers = List.empty();
 
   AuthenticationService({required userRepository})
       : _userRepository = userRepository;
@@ -14,15 +14,20 @@ class AuthenticationService {
   }
 
   Future<bool> isUserValid(User loginUser) async {
-    await fetchValidUsers();
+    await checkUserListEmpty();
+
     return _validUsers.contains(loginUser);
   }
 
   Future<User> loginUser(User loginUser) async {
+    await checkUserListEmpty();
+
+    return _validUsers.firstWhere((element) => element == loginUser);
+  }
+
+  Future<void> checkUserListEmpty() async {
     if (_validUsers.isEmpty) {
       await fetchValidUsers();
     }
-
-    return _validUsers.firstWhere((element) => element == loginUser);
   }
 }
