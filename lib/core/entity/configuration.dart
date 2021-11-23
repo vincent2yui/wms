@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wms/core/color_style.dart';
+import 'package:wms/user_auth/repository/demo_user_repository.dart';
+import 'package:wms/user_auth/repository/development_user_repository.dart';
+import 'package:wms/user_auth/repository/production_user_repository.dart';
 
 enum Configuration { embedded, development, production }
 
@@ -49,31 +52,16 @@ extension SelectedBannerColorConfiguration on Configuration {
 }
 
 extension SelectedWebServiceConfiguration on Configuration {
-  String get webServiceConfiguration {
+  dynamic get webServiceConfiguration {
     switch (this) {
       case Configuration.embedded:
-        return 'Embedded Demo';
+        return DemoUserRepository();
       case Configuration.development:
-        return 'http://s4devapp01.ffpgroup.net:8000/sap/opu/odata/sap/';
+        return DevelopmentUserRepository();
       case Configuration.production:
-        return 'http://s4prdapp01.ffpgroup.net:8000/sap/opu/odata/sap/';
+        return ProductionUserRepository();
       default:
         return 'Missing Web Service Configuration';
-    }
-  }
-}
-
-extension SelectedWebServiceCookieConfiguration on Configuration {
-  String get webServiceCookieConfiguration {
-    switch (this) {
-      case Configuration.embedded:
-        return 'Embedded Demo';
-      case Configuration.development:
-        return 'sap-usercontext=sap-client=110;';
-      case Configuration.production:
-        return 'sap-usercontext=sap-client=200;';
-      default:
-        return 'Missing Web Service Cookie Configuration';
     }
   }
 }

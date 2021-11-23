@@ -52,8 +52,8 @@ class MainApp extends StatelessWidget {
       title: 'Warehouse Management System',
       // debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: ColorStyle.primaryColor,
-      ),
+          primaryColor: ColorStyle.primaryColor,
+          primarySwatch: createMaterialColor(ColorStyle.primaryColor)),
       home: OnReactive(
         () {
           if (config.state == Configuration.production) {

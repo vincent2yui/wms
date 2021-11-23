@@ -6,6 +6,10 @@ import 'package:wms/core/color_style.dart';
 import 'package:wms/core/entity/configuration.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
+import 'package:wms/user_auth/repository/demo_user_repository.dart';
+import 'package:wms/user_auth/repository/development_user_repository.dart';
+import 'package:wms/user_auth/repository/production_user_repository.dart';
+import 'package:wms/user_auth/services/authentication_service.dart';
 import 'package:wms/user_auth/widgets/login_textfield.dart';
 
 import 'user_auth_main_menu.dart';
@@ -29,7 +33,7 @@ class LoginPage extends StatelessWidget {
             children: [
               LoginTextField(
                 controller: usernameController,
-                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+                padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0),
                 isObscureText: false,
                 hintText: "Username",
                 errorText: username.error?.message,
@@ -56,7 +60,6 @@ class LoginPage extends StatelessWidget {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       fixedSize: const Size(280, 60),
-                      primary: ColorStyle.primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
@@ -149,9 +152,7 @@ class LoginPage extends StatelessWidget {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: const [
-                    CircularProgressIndicator(
-                      color: ColorStyle.primaryColor,
-                    ),
+                    CircularProgressIndicator(),
                     SizedBox(width: 20),
                     Text('Checking Details...'),
                   ],
@@ -172,43 +173,46 @@ class LoginPage extends StatelessWidget {
   }
 
   Future<dynamic> buildShowModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Expanded(
-                      child: CupertinoPicker(
-                        itemExtent: 60,
-                        scrollController: FixedExtentScrollController(
-                            initialItem: config.state.index),
-                        onSelectedItemChanged: (index) {
-                          debugPrint(index.toString());
-                          config.state = Configuration.values[index];
-                        },
-                        children: <Widget>[
-                          Center(
-                            child: Text(Configuration.embedded.displayName),
-                          ),
-                          Center(
-                            child: Text(Configuration.development.displayName),
-                          ),
-                          Center(
-                            child: Text(Configuration.production.displayName),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        });
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          title: const Text('Choose Environment'),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: Text(Configuration.embedded.displayName),
+              onPressed: () {
+                Navigator.pop(context);
+                config.state = Configuration.embedded;
+                authService.setState((s) => AuthenticationService(
+                    userRepository: DemoUserRepository()));
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: Text(Configuration.development.displayName),
+              onPressed: () {
+                Navigator.pop(context);
+                config.state = Configuration.development;
+                authService.setState((s) => AuthenticationService(
+                    userRepository: DevelopmentUserRepository()));
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: Text(Configuration.production.displayName),
+              onPressed: () {
+                Navigator.pop(context);
+                config.state = Configuration.production;
+                authService.setState((s) => AuthenticationService(
+                    userRepository: ProductionUserRepository()));
+              },
+            )
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel'),
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+            },
+          )),
+    );
   }
 }

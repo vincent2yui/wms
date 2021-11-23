@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
-import 'package:wms/core/color_style.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
 
@@ -18,7 +17,6 @@ class MainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorStyle.primaryColor,
         automaticallyImplyLeading: false,
         title: OnReactive(() => Text(username.state.username)),
         actions: [
@@ -44,32 +42,32 @@ class MainMenu extends StatelessWidget {
                   ActivityCard(
                     activityName: "Receiving",
                     activityNameLogo: "receiving1.png",
-                    isActive: snapshot.data!.isReceivingActive == 'X',
+                    isActive: snapshot.data?.isReceivingActive == 'X',
                   ),
                   ActivityCard(
                     activityName: "Put Away",
                     activityNameLogo: "put_away1.png",
-                    isActive: snapshot.data!.isPutAwayActive == 'X',
+                    isActive: snapshot.data?.isPutAwayActive == 'X',
                   ),
                   ActivityCard(
                     activityName: "Picking",
                     activityNameLogo: "picking1.png",
-                    isActive: snapshot.data!.isPickingActive == 'X',
+                    isActive: snapshot.data?.isPickingActive == 'X',
                   ),
                   ActivityCard(
                     activityName: "Loading",
                     activityNameLogo: "loading1.png",
-                    isActive: snapshot.data!.isLoadingActive == 'X',
+                    isActive: snapshot.data?.isLoadingActive == 'X',
                   ),
                   ActivityCard(
                     activityName: "Replenishment",
                     activityNameLogo: "replenishment1.png",
-                    isActive: snapshot.data!.isReplenishmentActive == 'X',
+                    isActive: snapshot.data?.isReplenishmentActive == 'X',
                   ),
                   ActivityCard(
                     activityName: "Cycle Count",
                     activityNameLogo: "cycle_count1.png",
-                    isActive: snapshot.data!.isCycleCountActive == 'X',
+                    isActive: snapshot.data?.isCycleCountActive == 'X',
                   ),
                 ],
               );
