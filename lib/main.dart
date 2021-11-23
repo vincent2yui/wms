@@ -9,11 +9,6 @@ import 'core/entity/user.dart';
 import 'user_auth/services/authentication_service.dart';
 import 'user_auth/user_auth_login_page.dart';
 
-// final Injected<String> appVersion = RM.injectFuture(() async {
-//   final appInfo = await PackageInfo.fromPlatform();
-//   return appInfo.version;
-// });
-
 final Injected<Configuration> config =
     RM.inject(() => Configuration.production);
 

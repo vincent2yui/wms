@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
 import 'package:wms/core/entity/configuration.dart';
@@ -24,81 +25,88 @@ class LoginPage extends StatelessWidget {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: OnReactive(
-          () => Column(
-            children: [
-              LoginTextField(
-                controller: usernameController,
-                padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0),
-                isObscureText: false,
-                hintText: "Username",
-                errorText: username.error?.message,
-                onChanged: (String value) => username.state = Username(value),
-              ),
-              const SizedBox(height: 10),
-              LoginTextField(
-                controller: passwordController,
-                padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10),
-                isObscureText: true,
-                hintText: "Password",
-                errorText: password.error?.message,
-                onChanged: (String value) => password.state = Password(value),
-                onSubmitted:
-                    (areTextFieldsValid(usernameController, passwordController))
-                        ? (String value) async {
-                            await processLogin(context);
-                          }
-                        : (String value) {}, // Disable Login Process,
-              ),
-              const SizedBox(height: 10),
-              OnBuilder.data(
-                listenToMany: [username, password],
-                builder: (exposedModel) {
-                  return ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(280, 60),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+    return FutureBuilder<PackageInfo>(
+        future: PackageInfo.fromPlatform(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            resizeToAvoidBottomInset: false,
+            body: SafeArea(
+              child: OnReactive(
+                () => Column(
+                  children: [
+                    LoginTextField(
+                      controller: usernameController,
+                      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0),
+                      isObscureText: false,
+                      hintText: "Username",
+                      errorText: username.error?.message,
+                      onChanged: (String value) =>
+                          username.state = Username(value),
+                    ),
+                    const SizedBox(height: 10),
+                    LoginTextField(
+                      controller: passwordController,
+                      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10),
+                      isObscureText: true,
+                      hintText: "Password",
+                      errorText: password.error?.message,
+                      onChanged: (String value) =>
+                          password.state = Password(value),
+                      onSubmitted: (areTextFieldsValid(
+                              usernameController, passwordController))
+                          ? (String value) async {
+                              await processLogin(context);
+                            }
+                          : (String value) {}, // Disable Login Process,
+                    ),
+                    const SizedBox(height: 10),
+                    OnBuilder.data(
+                      listenToMany: [username, password],
+                      builder: (exposedModel) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(280, 60),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          child: const Text(
+                            'LOGIN',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          onPressed: areTextFieldsValid(
+                                  usernameController, passwordController)
+                              ? () async {
+                                  await processLogin(context);
+                                }
+                              : () {}, // Disable Login Process
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 20.0),
+                      child: GestureDetector(
+                        child: Image.asset(
+                          'assets/company_logo.png',
+                          scale: 2.5,
+                        ),
+                        onLongPress: () {
+                          buildEnvironmentShowActionBottomSheet(context);
+                        },
                       ),
                     ),
-                    child: const Text(
-                      'LOGIN',
-                      style: TextStyle(fontSize: 18),
+                    Text(
+                      'Warehouse Management System ${snapshot.data?.version}',
+                      style: const TextStyle(color: Colors.black38),
                     ),
-                    onPressed: areTextFieldsValid(
-                            usernameController, passwordController)
-                        ? () async {
-                            await processLogin(context);
-                          }
-                        : () {}, // Disable Login Process
-                  );
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 20.0),
-                child: GestureDetector(
-                  child: Image.asset(
-                    'assets/company_logo.png',
-                    scale: 2.5,
-                  ),
-                  onLongPress: () {
-                    buildEnvironmentShowActionBottomSheet(context);
-                  },
+                  ],
                 ),
               ),
-              const Text(
-                'Warehouse Management System 1.0.0',
-                style: TextStyle(color: Colors.black38),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
   bool areTextFieldsValid(TextEditingController usernameController,
