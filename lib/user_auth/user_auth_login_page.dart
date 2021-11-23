@@ -22,8 +22,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
+    final _usernameController = TextEditingController();
+    final _passwordController = TextEditingController();
 
     return FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
                 () => Column(
                   children: [
                     LoginTextField(
-                      controller: usernameController,
+                      controller: _usernameController,
                       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0),
                       isObscureText: false,
                       hintText: "Username",
@@ -46,7 +46,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     LoginTextField(
-                      controller: passwordController,
+                      controller: _passwordController,
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10),
                       isObscureText: true,
                       hintText: "Password",
@@ -54,7 +54,7 @@ class LoginPage extends StatelessWidget {
                       onChanged: (String value) =>
                           password.state = Password(value),
                       onSubmitted: (areTextFieldsValid(
-                              usernameController, passwordController))
+                              _usernameController, _passwordController))
                           ? (String value) async {
                               await processLogin(context);
                             }
@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
                             style: TextStyle(fontSize: 18),
                           ),
                           onPressed: areTextFieldsValid(
-                                  usernameController, passwordController)
+                                  _usernameController, _passwordController)
                               ? () async {
                                   await processLogin(context);
                                 }
@@ -218,6 +218,7 @@ class LoginPage extends StatelessWidget {
             ),
             CupertinoActionSheetAction(
               child: Text(Configuration.production.displayName),
+              isDefaultAction: true,
               onPressed: () {
                 Navigator.pop(context);
                 config.state = Configuration.production;

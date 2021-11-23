@@ -36,13 +36,14 @@ class LoginTextField extends StatelessWidget {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(15.0),
           suffix: GestureDetector(
-              onTap: () {
-                controller.clear();
-              },
-              child: const Icon(
-                Icons.clear,
-                color: ColorStyle.primaryColor,
-              )),
+            onTap: () {
+              controller.clear();
+            },
+            child: const Icon(
+              Icons.clear,
+              color: ColorStyle.primaryColor,
+            ),
+          ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Colors.white12,

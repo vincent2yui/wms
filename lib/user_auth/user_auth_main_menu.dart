@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
+import 'package:wms/put_away/widgets/put_away_bottom_sheet.dart';
 
 import 'widgets/user_auth_activity_card.dart';
 
@@ -46,35 +47,43 @@ class MainMenu extends StatelessWidget {
                     mainAxisExtent: 118,
                   ),
                   children: [
-                    ActivityCard(
-                      activityName: "Receiving",
-                      activityNameLogo: "receiving1.png",
-                      isActive: snapshot.data?.isReceivingActive == 'X',
+                    InkWell(
+                      child: ActivityCard(
+                        activityName: "Receiving",
+                        activityNameLogo: "receiving1.png",
+                        isActive: snapshot.data?.isReceivingActive == 'X',
+                        bottomSheetContent: const PutAwayBottomSheetContent(),
+                      ),
                     ),
                     ActivityCard(
                       activityName: "Put Away",
                       activityNameLogo: "put_away1.png",
                       isActive: snapshot.data?.isPutAwayActive == 'X',
+                      bottomSheetContent: const PutAwayBottomSheetContent(),
                     ),
                     ActivityCard(
                       activityName: "Picking",
                       activityNameLogo: "picking1.png",
                       isActive: snapshot.data?.isPickingActive == 'X',
+                      bottomSheetContent: const PutAwayBottomSheetContent(),
                     ),
                     ActivityCard(
                       activityName: "Loading",
                       activityNameLogo: "loading1.png",
                       isActive: snapshot.data?.isLoadingActive == 'X',
+                      bottomSheetContent: const PutAwayBottomSheetContent(),
                     ),
                     ActivityCard(
                       activityName: "Replenishment",
                       activityNameLogo: "replenishment1.png",
                       isActive: snapshot.data?.isReplenishmentActive == 'X',
+                      bottomSheetContent: const PutAwayBottomSheetContent(),
                     ),
                     ActivityCard(
                       activityName: "Cycle Count",
                       activityNameLogo: "cycle_count1.png",
                       isActive: snapshot.data?.isCycleCountActive == 'X',
+                      bottomSheetContent: const PutAwayBottomSheetContent(),
                     ),
                   ],
                 );
