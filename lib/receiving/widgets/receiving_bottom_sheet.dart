@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wms/core/color_style.dart';
 
-class PutAwayBottomSheetContent extends StatelessWidget {
-  const PutAwayBottomSheetContent({Key? key}) : super(key: key);
+class ReceivingBottomSheetContent extends StatelessWidget {
+  const ReceivingBottomSheetContent({Key? key}) : super(key: key);
 
-  final String _activityName = 'Put Away';
-  final String _hintText = 'Handling Unit Number';
+  final String _activityName = 'Receiving';
+  final String _hintText = 'ASN Number';
   final String _buttonName = 'ENTER';
 
   @override

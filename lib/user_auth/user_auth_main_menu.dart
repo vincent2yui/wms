@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/entity/user.dart';
 import 'package:wms/main.dart';
+import 'package:wms/picking/widgets/picking_bottom_sheet.dart';
 import 'package:wms/put_away/widgets/put_away_bottom_sheet.dart';
+import 'package:wms/receiving/widgets/receiving_bottom_sheet.dart';
 
 import 'widgets/user_auth_activity_card.dart';
 
@@ -52,7 +54,7 @@ class MainMenu extends StatelessWidget {
                         activityName: "Receiving",
                         activityNameLogo: "receiving1.png",
                         isActive: snapshot.data?.isReceivingActive == 'X',
-                        bottomSheetContent: const PutAwayBottomSheetContent(),
+                        bottomSheetContent: const ReceivingBottomSheetContent(),
                       ),
                     ),
                     ActivityCard(
@@ -65,7 +67,7 @@ class MainMenu extends StatelessWidget {
                       activityName: "Picking",
                       activityNameLogo: "picking1.png",
                       isActive: snapshot.data?.isPickingActive == 'X',
-                      bottomSheetContent: const PutAwayBottomSheetContent(),
+                      bottomSheetContent: const PickingBottomSheetContent(),
                     ),
                     ActivityCard(
                       activityName: "Loading",
