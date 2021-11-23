@@ -47,11 +47,12 @@ class LoginPage extends StatelessWidget {
                 hintText: "Password",
                 errorText: password.error?.message,
                 onChanged: (String value) => password.state = Password(value),
-                onSubmitted: isValid
-                    ? (String value) async {
-                        await processLogin(context);
-                      }
-                    : (String value) {}, // Disable Login Process,
+                onSubmitted:
+                    (areTextFieldsValid(usernameController, passwordController))
+                        ? (String value) async {
+                            await processLogin(context);
+                          }
+                        : (String value) {}, // Disable Login Process,
               ),
               const SizedBox(height: 10),
               OnBuilder.data(
@@ -68,7 +69,8 @@ class LoginPage extends StatelessWidget {
                       'LOGIN',
                       style: TextStyle(fontSize: 18),
                     ),
-                    onPressed: isValid
+                    onPressed: areTextFieldsValid(
+                            usernameController, passwordController)
                         ? () async {
                             await processLogin(context);
                           }
@@ -84,7 +86,7 @@ class LoginPage extends StatelessWidget {
                     scale: 2.5,
                   ),
                   onLongPress: () {
-                    buildShowModalBottomSheet(context);
+                    buildEnvironmentShowActionBottomSheet(context);
                   },
                 ),
               ),
@@ -97,6 +99,13 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool areTextFieldsValid(TextEditingController usernameController,
+      TextEditingController passwordController) {
+    return isValid &&
+        (usernameController.text.isNotEmpty &&
+            passwordController.text.isNotEmpty);
   }
 
   Future<void> processLogin(BuildContext context) async {
@@ -152,7 +161,10 @@ class LoginPage extends StatelessWidget {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: const [
-                    CircularProgressIndicator(),
+                    CupertinoActivityIndicator(
+                      animating: true,
+                      radius: 20,
+                    ),
                     SizedBox(width: 20),
                     Text('Checking Details...'),
                   ],
@@ -172,7 +184,7 @@ class LoginPage extends StatelessWidget {
     }
   }
 
-  Future<dynamic> buildShowModalBottomSheet(BuildContext context) {
+  Future<dynamic> buildEnvironmentShowActionBottomSheet(BuildContext context) {
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
