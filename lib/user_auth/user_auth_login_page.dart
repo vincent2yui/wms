@@ -65,6 +65,7 @@ class LoginPage extends StatelessWidget {
                       listenToMany: [username, password],
                       builder: (exposedModel) {
                         return ElevatedButton(
+                          key: const Key('LoginButtonKey'),
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(280, 60),
                             shape: RoundedRectangleBorder(
@@ -88,6 +89,7 @@ class LoginPage extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 20.0),
                       child: GestureDetector(
+                        key: const Key('CompanyLogoKey'),
                         child: Image.asset(
                           'assets/company_logo.png',
                           scale: 2.5,
