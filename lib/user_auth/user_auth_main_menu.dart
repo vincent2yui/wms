@@ -6,6 +6,7 @@ import 'package:wms/main.dart';
 import 'package:wms/picking/widgets/picking_bottom_sheet.dart';
 import 'package:wms/put_away/widgets/put_away_bottom_sheet.dart';
 import 'package:wms/receiving/widgets/receiving_bottom_sheet.dart';
+import 'package:wms/user_auth/user_auth_login_page.dart';
 
 import 'widgets/user_auth_activity_card.dart';
 
@@ -104,12 +105,18 @@ class MainMenu extends StatelessWidget {
             content: const Text('Do you want to logout?'),
             actions: <CupertinoDialogAction>[
               CupertinoDialogAction(
-                onPressed: () => Navigator.of(context).pop(false),
                 child: const Text('No'),
+                onPressed: () {
+                  RM.navigate.back(false); // Cancel Dialog
+                },
               ),
               CupertinoDialogAction(
-                onPressed: () => Navigator.of(context).pop(true),
                 child: const Text('Yes'),
+                onPressed: () {
+                  RM.transitions.rightToLeft();
+                  RM.navigate.toAndRemoveUntil(
+                      const LoginPage()); // Return to Login Menu
+                },
               ),
             ],
           ),

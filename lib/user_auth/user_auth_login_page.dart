@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                       controller: _usernameController,
                       padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0),
                       isObscureText: false,
-                      hintText: "Username",
+                      hintText: 'Username',
                       errorText: username.error?.message,
                       onChanged: (String value) =>
                           username.state = Username(value),
@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
                       controller: _passwordController,
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 10),
                       isObscureText: true,
-                      hintText: "Password",
+                      hintText: 'Password',
                       errorText: password.error?.message,
                       onChanged: (String value) =>
                           password.state = Password(value),
@@ -190,7 +190,8 @@ class LoginPage extends StatelessWidget {
       password: password.state.password,
     ));
     if (result) {
-      RM.navigate.toReplacement(const MainMenu());
+      RM.transitions.leftToRight();
+      RM.navigate.toAndRemoveUntil(const MainMenu());
     }
   }
 
