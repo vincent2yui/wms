@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
+import 'package:wms/picking/widgets/picking_main_page.dart';
 
 class PickingBottomSheetContent extends StatelessWidget {
   const PickingBottomSheetContent({Key? key}) : super(key: key);
@@ -83,7 +85,8 @@ class PickingBottomSheetContent extends StatelessWidget {
               ),
               onTap: () {
                 debugPrint(_activityName);
-                Navigator.pop(context);
+                RM.transitions.leftToRight();
+                RM.navigate.to(const PickingMainPage());
               },
             ),
           ],
