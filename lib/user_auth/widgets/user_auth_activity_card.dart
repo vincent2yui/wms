@@ -25,9 +25,13 @@ class ActivityCard extends StatelessWidget {
           : ColorStyle.disableSecondaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: InkWell(
-        onTap: () {
-          buildActivityShowActionBottomSheet(context);
-        },
+        onTap: isActive
+            ? () {
+                buildActivityShowActionBottomSheet(context);
+              }
+            : () {
+                debugPrint('$activityName is $isActive');
+              },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

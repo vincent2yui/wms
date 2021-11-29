@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     OnBuilder.data(
-                      listenToMany: [username, password],
+                      listenToMany: [username, password, config, authService],
                       builder: (exposedModel) {
                         return ElevatedButton(
                           key: const Key('LoginButtonKey'),
@@ -206,7 +206,7 @@ class LoginPage extends StatelessWidget {
               child: Text(Configuration.embedded.displayName),
               onPressed: () {
                 RM.navigate.back(false);
-                config.state = Configuration.embedded;
+                config.setState((s) => Configuration.embedded);
                 authService.setState((s) => AuthenticationService(
                     userRepository: DemoUserRepository()));
               },
@@ -215,7 +215,7 @@ class LoginPage extends StatelessWidget {
               child: Text(Configuration.development.displayName),
               onPressed: () {
                 RM.navigate.back(false);
-                config.state = Configuration.development;
+                config.setState((s) => Configuration.development);
                 authService.setState((s) => AuthenticationService(
                     userRepository: DevelopmentUserRepository()));
               },
@@ -225,7 +225,7 @@ class LoginPage extends StatelessWidget {
               isDefaultAction: true,
               onPressed: () {
                 RM.navigate.back(false);
-                config.state = Configuration.production;
+                config.setState((s) => Configuration.production);
                 authService.setState((s) => AuthenticationService(
                     userRepository: ProductionUserRepository()));
               },

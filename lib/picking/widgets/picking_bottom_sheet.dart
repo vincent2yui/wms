@@ -82,8 +82,8 @@ class PickingBottomSheetContent extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                Navigator.pop(context);
                 debugPrint(_activityName);
+                Navigator.pop(context);
               },
             ),
           ],
