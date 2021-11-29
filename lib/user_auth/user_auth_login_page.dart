@@ -152,17 +152,18 @@ class LoginPage extends StatelessWidget {
                     );
                   }
                 } else if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const FaIcon(
+                    children: const [
+                      FaIcon(
                         FontAwesomeIcons.timesCircle,
                         size: 30,
                         color: ColorStyle.errorColor,
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Text(
-                        '${snapshot.error}',
+                        'Web Service Error',
                         softWrap: true,
                       ),
                     ],
