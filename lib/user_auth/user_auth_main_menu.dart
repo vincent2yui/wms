@@ -6,7 +6,6 @@ import 'package:wms/main.dart';
 import 'package:wms/picking/widgets/picking_bottom_sheet.dart';
 import 'package:wms/put_away/widgets/put_away_bottom_sheet.dart';
 import 'package:wms/receiving/widgets/receiving_bottom_sheet.dart';
-import 'package:wms/user_auth/user_auth_login_page.dart';
 
 import 'widgets/user_auth_activity_card.dart';
 
@@ -114,8 +113,7 @@ class MainMenu extends StatelessWidget {
                 child: const Text('Yes'),
                 onPressed: () {
                   RM.transitions.rightToLeft();
-                  RM.navigate.toAndRemoveUntil(
-                      const LoginPage()); // Return to Login Menu
+                  RM.navigate.back(true); // Return to Login Menu
                 },
               ),
             ],

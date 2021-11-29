@@ -190,8 +190,9 @@ class LoginPage extends StatelessWidget {
       password: password.state.password,
     ));
     if (result) {
+      RM.navigate.back(false);
       RM.transitions.leftToRight();
-      RM.navigate.toAndRemoveUntil(const MainMenu());
+      RM.navigate.to(const MainMenu());
     }
   }
 
@@ -204,7 +205,7 @@ class LoginPage extends StatelessWidget {
             CupertinoActionSheetAction(
               child: Text(Configuration.embedded.displayName),
               onPressed: () {
-                Navigator.pop(context);
+                RM.navigate.back(false);
                 config.state = Configuration.embedded;
                 authService.setState((s) => AuthenticationService(
                     userRepository: DemoUserRepository()));
@@ -213,7 +214,7 @@ class LoginPage extends StatelessWidget {
             CupertinoActionSheetAction(
               child: Text(Configuration.development.displayName),
               onPressed: () {
-                Navigator.pop(context);
+                RM.navigate.back(false);
                 config.state = Configuration.development;
                 authService.setState((s) => AuthenticationService(
                     userRepository: DevelopmentUserRepository()));
@@ -223,7 +224,7 @@ class LoginPage extends StatelessWidget {
               child: Text(Configuration.production.displayName),
               isDefaultAction: true,
               onPressed: () {
-                Navigator.pop(context);
+                RM.navigate.back(false);
                 config.state = Configuration.production;
                 authService.setState((s) => AuthenticationService(
                     userRepository: ProductionUserRepository()));
@@ -234,7 +235,7 @@ class LoginPage extends StatelessWidget {
             child: const Text('Cancel'),
             isDefaultAction: true,
             onPressed: () {
-              Navigator.pop(context, 'Cancel');
+              RM.navigate.back(false);
             },
           )),
     );
