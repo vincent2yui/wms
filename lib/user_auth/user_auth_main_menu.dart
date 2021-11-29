@@ -23,73 +23,77 @@ class MainMenu extends StatelessWidget {
       onWillPop: () async {
         return await _onLogoutBackPress(context);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: OnReactive(() => Text(username.state.username)),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.logout_rounded),
-              onPressed: () async {
-                return await _onLogoutBackPress(context);
-              },
-            )
-          ],
-        ),
-        body: OnReactive(
-          () => FutureBuilder<User>(
-              future: loginUser,
-              builder: (context, snapshot) {
-                return GridView(
-                  padding: const EdgeInsets.all(18),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    mainAxisExtent: 118,
-                  ),
-                  children: [
-                    InkWell(
-                      child: ActivityCard(
-                        activityName: "Receiving",
-                        activityNameLogo: "receiving1.png",
-                        isActive: snapshot.data?.isReceivingActive == 'X',
-                        bottomSheetContent: const ReceivingBottomSheetContent(),
+      child: BannerPage(
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: OnReactive(() => Text(username.state.username)),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout_rounded),
+                onPressed: () async {
+                  return await _onLogoutBackPress(context);
+                },
+              )
+            ],
+          ),
+          body: OnReactive(
+            () => FutureBuilder<User>(
+                future: loginUser,
+                builder: (context, snapshot) {
+                  return GridView(
+                    padding: const EdgeInsets.all(18),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 118,
+                    ),
+                    children: [
+                      InkWell(
+                        child: ActivityCard(
+                          activityName: "Receiving",
+                          activityNameLogo: "receiving1.png",
+                          isActive: snapshot.data?.isReceivingActive == 'X',
+                          bottomSheetContent:
+                              const ReceivingBottomSheetContent(),
+                        ),
                       ),
-                    ),
-                    ActivityCard(
-                      activityName: "Put Away",
-                      activityNameLogo: "put_away1.png",
-                      isActive: snapshot.data?.isPutAwayActive == 'X',
-                      bottomSheetContent: const PutAwayBottomSheetContent(),
-                    ),
-                    ActivityCard(
-                      activityName: "Picking",
-                      activityNameLogo: "picking1.png",
-                      isActive: snapshot.data?.isPickingActive == 'X',
-                      bottomSheetContent: const PickingBottomSheetContent(),
-                    ),
-                    ActivityCard(
-                      activityName: "Loading",
-                      activityNameLogo: "loading1.png",
-                      isActive: snapshot.data?.isLoadingActive == 'X',
-                      bottomSheetContent: const PutAwayBottomSheetContent(),
-                    ),
-                    ActivityCard(
-                      activityName: "Replenishment",
-                      activityNameLogo: "replenishment1.png",
-                      isActive: snapshot.data?.isReplenishmentActive == 'X',
-                      bottomSheetContent: const PutAwayBottomSheetContent(),
-                    ),
-                    ActivityCard(
-                      activityName: "Cycle Count",
-                      activityNameLogo: "cycle_count1.png",
-                      isActive: snapshot.data?.isCycleCountActive == 'X',
-                      bottomSheetContent: const PutAwayBottomSheetContent(),
-                    ),
-                  ],
-                );
-              }),
+                      ActivityCard(
+                        activityName: "Put Away",
+                        activityNameLogo: "put_away1.png",
+                        isActive: snapshot.data?.isPutAwayActive == 'X',
+                        bottomSheetContent: const PutAwayBottomSheetContent(),
+                      ),
+                      ActivityCard(
+                        activityName: "Picking",
+                        activityNameLogo: "picking1.png",
+                        isActive: snapshot.data?.isPickingActive == 'X',
+                        bottomSheetContent: const PickingBottomSheetContent(),
+                      ),
+                      ActivityCard(
+                        activityName: "Loading",
+                        activityNameLogo: "loading1.png",
+                        isActive: snapshot.data?.isLoadingActive == 'X',
+                        bottomSheetContent: const PutAwayBottomSheetContent(),
+                      ),
+                      ActivityCard(
+                        activityName: "Replenishment",
+                        activityNameLogo: "replenishment1.png",
+                        isActive: snapshot.data?.isReplenishmentActive == 'X',
+                        bottomSheetContent: const PutAwayBottomSheetContent(),
+                      ),
+                      ActivityCard(
+                        activityName: "Cycle Count",
+                        activityNameLogo: "cycle_count1.png",
+                        isActive: snapshot.data?.isCycleCountActive == 'X',
+                        bottomSheetContent: const PutAwayBottomSheetContent(),
+                      ),
+                    ],
+                  );
+                }),
+          ),
         ),
       ),
     );
