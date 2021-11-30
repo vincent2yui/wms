@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
+import 'package:wms/core/color_style.dart';
 
 import '../../main.dart';
 
@@ -11,42 +13,33 @@ class PickingMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BannerPage(
       child: Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              floating: false,
-              pinned: true,
-              snap: false,
-              expandedHeight: 160.0,
-              flexibleSpace: FlexibleSpaceBar(
-                title: OnReactive(
-                    () => Text('${username.state.username} Picking')),
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 20,
-                child: Center(
-                  child: Text('Scroll to see the SliverAppBar in effect.'),
-                ),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    color: index.isOdd ? Colors.white : Colors.black12,
-                    height: 100.0,
-                    child: Center(
-                      child: Text('$index', textScaleFactor: 5),
-                    ),
-                  );
-                },
-                childCount: 20,
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: OnReactive(() => Text('${username.state.username} - Picking')),
         ),
+        body: ListView.separated(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(height: 20),
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  title: Text('Batch $index'),
+                  subtitle: Text('Quantity $index'),
+                  leading: const FaIcon(
+                    FontAwesomeIcons.exclamationCircle,
+                    size: 30,
+                    color: ColorStyle.disableMainColor,
+                  ),
+                  trailing: const FaIcon(
+                    FontAwesomeIcons.angleRight,
+                    size: 30,
+                    color: ColorStyle.disableMainColor,
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }
