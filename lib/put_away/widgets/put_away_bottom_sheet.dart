@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
+import 'package:wms/core/widgets/loading_dialog_content.dart';
 
 class PutAwayBottomSheetContent extends StatelessWidget {
   const PutAwayBottomSheetContent({Key? key}) : super(key: key);
@@ -82,8 +84,16 @@ class PutAwayBottomSheetContent extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                Navigator.pop(context);
+                RM.navigate.back(true);
                 debugPrint(_activityName);
+                showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                    content: LoadingDialogContent(title: 'Loading Details...'),
+                  ),
+                );
               },
             ),
           ],

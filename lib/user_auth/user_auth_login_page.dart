@@ -6,6 +6,7 @@ import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:wms/core/color_style.dart';
 import 'package:wms/core/entity/configuration.dart';
 import 'package:wms/core/entity/user.dart';
+import 'package:wms/core/widgets/loading_dialog_content.dart';
 import 'package:wms/main.dart';
 import 'package:wms/user_auth/repository/demo_user_repository.dart';
 import 'package:wms/user_auth/repository/development_user_repository.dart';
@@ -123,6 +124,8 @@ class LoginPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
         content: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -169,17 +172,7 @@ class LoginPage extends StatelessWidget {
                     ],
                   );
                 }
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    CupertinoActivityIndicator(
-                      animating: true,
-                      radius: 20,
-                    ),
-                    SizedBox(width: 20),
-                    Text('Checking Details...'),
-                  ],
-                );
+                return const LoadingDialogContent(title: 'Checking Details...');
               },
             ),
           ],
